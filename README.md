@@ -34,24 +34,135 @@ A platform for kendama instructors to share tutorial videos and for students to 
 - Supabase account
 - Stripe account (with Connect capability)
 
-## Environment Variables
+## Environment Configuration
 
-Create a `.env.local` file in the root directory with the following variables:
+Teach Niche uses a centralized environment configuration system to manage all environment variables in a type-safe and validated way. This helps prevent runtime errors and provides better developer experience.
+
+### Environment Configuration System
+
+All environment variables are managed through a centralized module in `lib/env.ts` which:
+
+- **Validates** all environment variables with Zod schema validation
+- Provides **strong TypeScript typing** for all variables
+- Organizes variables into **logical groups** (Supabase, Stripe, Next.js, etc.)
+- Includes **helpful error messages** when variables are missing or invalid
+- Performs necessary **transformations** (like converting string values to numbers)
+- Exports **convenience helpers** for environment-based conditions (`isDevelopment`, `isProduction`, etc.)
+
+### Environment Variable Groups
+
+The environment configuration is organized into the following logical groups:
+
+1. **Supabase Configuration**: Variables related to Supabase authentication, database, and storage
+2. **Stripe Configuration**: Variables for Stripe payments integration
+3. **Stripe Connect Configuration**: Variables specific to the Stripe Connect platform for instructors
+4. **Next.js Configuration**: Variables for Next.js application settings
+5. **Miscellaneous Configuration**: Other application-specific variables
+
+### Setting Up Environment Variables
+
+1. Create a `.env.local` file in the root directory based on the `.env.example` file:
+
+```bash
+cp .env.example .env.local
+```
+
+2. Fill in the values in `.env.local` with your specific configuration:
 
 ```
-# Supabase
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+# Supabase Configuration
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
+SUPABASE_DB_PASSWORD=your_database_password
 
-# Stripe
+# Stripe Configuration
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
 STRIPE_SECRET_KEY=your_stripe_secret_key
 STRIPE_WEBHOOK_SECRET=your_stripe_webhook_secret
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
+STRIPE_WEBHOOK_URL=your_stripe_webhook_url
 
-# App
-NEXT_PUBLIC_APP_URL=http://localhost:3000
+# Stripe Connect Configuration
+STRIPE_CONNECT_CLIENT_ID=your_stripe_connect_client_id
+NEXT_PUBLIC_STRIPE_CONNECT_REDIRECT_URL=your_stripe_connect_redirect_url
+STRIPE_PLATFORM_ACCOUNT_ID=your_stripe_platform_account_id
+STRIPE_APPLICATION_FEE_PERCENT=15
+
+# Next.js Configuration
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+NEXT_PUBLIC_AUTH_REDIRECT_URL=http://localhost:3000/auth/callback
 ```
+
+### Environment-Specific Configuration
+
+#### Development Environment
+
+For local development, simply use the `.env.local` file as described above. The system will automatically detect a development environment when `NODE_ENV` is set to `development` (the default).
+
+#### Test Environment
+
+For test environments, you can create a `.env.test.local` file with test-specific values:
+
+```bash
+cp .env.example .env.test.local
+```
+
+Then modify the values as needed for your test environment. When running tests, ensure that `NODE_ENV` is set to `test`.
+
+#### Production Environment
+
+For production, you should set environment variables through your hosting platform (e.g., Vercel):
+
+1. Go to your project settings in Vercel
+2. Navigate to the Environment Variables section
+3. Add all the required variables from `.env.example`
+4. Ensure `NODE_ENV` is set to `production`
+
+### Using Environment Variables in Your Code
+
+The centralized environment configuration system should be used instead of directly accessing `process.env`:
+
+```typescript
+// ❌ Don't use process.env directly
+const apiUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+
+// ✅ Use the centralized environment configuration
+import { supabaseEnv, nextEnv, isDevelopment } from '@/lib/env';
+
+// Access grouped variables
+const apiUrl = supabaseEnv.url;
+const siteUrl = nextEnv.siteUrl;
+
+// Use environment helpers
+if (isDevelopment) {
+  console.log('Running in development mode');
+}
+```
+
+Each group exports related variables for convenient access:
+
+```typescript
+// Examples of available groups
+import { 
+  supabaseEnv,    // Supabase-related variables
+  stripeEnv,      // Stripe payment variables
+  stripeConnectEnv, // Stripe Connect variables
+  nextEnv,        // Next.js application variables
+} from '@/lib/env';
+```
+
+### Benefits of the Centralized Environment System
+
+1. **Type Safety**: All environment variables have proper TypeScript types
+2. **Validation**: Missing or invalid variables are caught early with clear error messages
+3. **Organization**: Variables are grouped by their related services
+4. **Documentation**: Each variable has detailed comments explaining its purpose
+5. **Default Values**: Some variables have sensible defaults to simplify configuration
+6. **Transformation**: String-based env variables are automatically converted to appropriate types
+
+### Handling Environment Validation Errors
+
+If your application fails to start with an error message about invalid environment variables, check the console for detailed information about which variables are missing or invalid.
 
 ## Installation
 
@@ -66,12 +177,18 @@ cd teach-niche
 pnpm install
 ```
 
-3. Run the development server:
+3. Set up environment variables:
+```bash
+cp .env.example .env.local
+# Edit .env.local with your configuration
+```
+
+4. Run the development server:
 ```bash
 pnpm dev
 ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser.
+5. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## Supabase Setup
 
@@ -101,6 +218,7 @@ teach-niche/
 │   └── videos/           # Video browsing and viewing
 ├── components/           # Reusable React components
 ├── lib/                  # Utility functions and services
+│   ├── env.ts            # Centralized environment configuration
 │   ├── stripe.ts         # Stripe integration
 │   └── supabase/         # Supabase clients
 ├── public/               # Static assets
@@ -161,3 +279,4 @@ Or any other platform that supports Next.js applications.
 - [Supabase](https://supabase.io/)
 - [Stripe](https://stripe.com/)
 - [shadcn/ui](https://ui.shadcn.com/)
+- [Zod](https://github.com/colinhacks/zod) - For environment variable validation

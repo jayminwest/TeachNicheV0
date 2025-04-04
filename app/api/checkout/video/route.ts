@@ -1,6 +1,7 @@
 import { createServerClient } from "@/lib/supabase/server"
 import { stripe, calculateFees } from "@/lib/stripe"
 import { NextResponse } from "next/server"
+import { nextEnv } from "@/lib/env"
 
 import { SupabaseClient } from '@supabase/supabase-js';
 import { Database } from '@/types/supabase';
@@ -102,9 +103,8 @@ export async function POST(request: Request) {
     const priceInCents = Math.round(price * 100)
     const { platformFee, instructorAmount } = calculateFees(priceInCents)
     
-    // Get the base URL for redirects
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 
-                   (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000');
+    // Get the base URL for redirects from the centralized env config
+    const baseUrl = nextEnv.appUrl
     
     // Create a Stripe Checkout Session with Connect
     const checkoutSession = await stripe.checkout.sessions.create({

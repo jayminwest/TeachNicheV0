@@ -3,21 +3,13 @@ import { stripe, calculateFees } from "@/lib/stripe"
 import { createClient } from "@supabase/supabase-js"
 import type { Database } from "@/types/supabase"
 import Stripe from "stripe"
-
-// Check for required environment variables
-if (!process.env.SUPABASE_URL) {
-  console.error("Missing SUPABASE_URL environment variable");
-}
-
-if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
-  console.error("Missing SUPABASE_SERVICE_ROLE_KEY environment variable");
-}
+import { supabaseEnv, stripeEnv } from "@/lib/env"
 
 // Initialize Supabase client with service role for admin access
 // This is needed for webhook operations where we don't have a user session
 const supabase = createClient<Database>(
-  process.env.SUPABASE_URL || "https://your-project.supabase.co",
-  process.env.SUPABASE_SERVICE_ROLE_KEY || ""
+  supabaseEnv.url,
+  supabaseEnv.serviceRoleKey
 )
 
 export async function POST(request: NextRequest) {
@@ -28,7 +20,7 @@ export async function POST(request: NextRequest) {
   const signature = request.headers.get("stripe-signature")
 
   try {
-    event = stripe.webhooks.constructEvent(payload, signature || "", process.env.STRIPE_WEBHOOK_SECRET || "")
+    event = stripe.webhooks.constructEvent(payload, signature || "", stripeEnv.webhookSecret)
   } catch (err: any) {
     console.error(`Webhook signature verification failed: ${err.message}`)
     return NextResponse.json({ error: `Webhook Error: ${err.message}` }, { status: 400 })
@@ -275,4 +267,3 @@ export const config = {
     bodyParser: false,
   },
 }
-

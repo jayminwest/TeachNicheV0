@@ -1,11 +1,12 @@
 import Stripe from "stripe"
+import { stripeEnv, stripeConnectEnv } from "@/lib/env"
 
 // Initialize Stripe
 let stripe: Stripe;
 
 // Only initialize if we have a key
-if (process.env.STRIPE_SECRET_KEY) {
-  stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+if (stripeEnv.secretKey) {
+  stripe = new Stripe(stripeEnv.secretKey, {
     apiVersion: "2025-03-31.basil", // Update to expected version
     appInfo: {
       name: "Teach Niche",
@@ -23,7 +24,8 @@ if (process.env.STRIPE_SECRET_KEY) {
 export { stripe }
 
 // Constants for the platform fee percentage
-export const PLATFORM_FEE_PERCENTAGE = 15
+// Use the platform fee percentage from environment configuration
+export const PLATFORM_FEE_PERCENTAGE = stripeConnectEnv.applicationFeePercent
 export const INSTRUCTOR_PERCENTAGE = 100 - PLATFORM_FEE_PERCENTAGE
 
 // Helper function to calculate fee amounts
@@ -88,4 +90,3 @@ export async function syncStripeAccountStatus(supabase: any, userId: string, str
     throw error;
   }
 }
-
