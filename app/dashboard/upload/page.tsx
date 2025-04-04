@@ -84,6 +84,36 @@ export default function UploadContent() {
     checkStripeStatus()
   }, [])
 
+  // Clean up thumbnail preview URL when it changes or component unmounts
+  useEffect(() => {
+    // Store the current thumbnailPreview URL
+    const currentThumbnailUrl = thumbnailPreview;
+    
+    // Return cleanup function that runs when either:
+    // 1. thumbnailPreview changes (cleaning up the previous value)
+    // 2. component unmounts (cleaning up the final value)
+    return () => {
+      if (currentThumbnailUrl) {
+        URL.revokeObjectURL(currentThumbnailUrl);
+        console.log("Thumbnail preview URL revoked:", currentThumbnailUrl);
+      }
+    };
+  }, [thumbnailPreview]);
+
+  // Clean up video preview URL when it changes or component unmounts
+  useEffect(() => {
+    // Store the current previewUrl
+    const currentVideoUrl = previewUrl;
+    
+    // Return cleanup function
+    return () => {
+      if (currentVideoUrl) {
+        URL.revokeObjectURL(currentVideoUrl);
+        console.log("Video preview URL revoked:", currentVideoUrl);
+      }
+    };
+  }, [previewUrl]);
+
   const generateThumbnail = (): Promise<Blob> => {
     return new Promise((resolve, reject) => {
       if (!videoRef.current || !canvasRef.current) {
@@ -228,9 +258,9 @@ export default function UploadContent() {
     // Create a preview URL
     const objectUrl = URL.createObjectURL(file)
     setThumbnailPreview(objectUrl)
-
-    // Clean up the URL when component unmounts
-    return () => URL.revokeObjectURL(objectUrl)
+    
+    // Remove the cleanup return - it never gets called in an event handler
+    // return () => URL.revokeObjectURL(objectUrl)
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -786,4 +816,3 @@ export default function UploadContent() {
     </div>
   )
 }
-
