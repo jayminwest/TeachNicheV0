@@ -1,0 +1,50 @@
+/* 
+ * Theme Configuration
+ * This file contains theme-specific styles and configurations
+ */
+
+@import './tokens.css';
+
+/* Apply theme-specific overrides here */
+
+/* Theme transitions */
+body {
+  transition: background-color 0.3s ease,
+              color 0.3s ease;
+}
+
+/* High contrast mode overrides */
+@media (prefers-contrast: high) {
+  :root {
+    --primary: 20 80% 40%;
+    --primary-foreground: 0 0% 100%;
+    --border: 0 0% 20%;
+    --ring: 0 0% 20%;
+  }
+  
+  .dark {
+    --primary: 20 80% 60%;
+    --primary-foreground: 0 0% 0%;
+    --border: 0 0% 80%;
+    --ring: 0 0% 80%;
+  }
+  
+  /* Increase contrast for better readability */
+  a {
+    text-decoration: underline;
+  }
+  
+  code, pre {
+    border: 1px solid hsl(var(--border));
+  }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

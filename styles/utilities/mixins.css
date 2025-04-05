@@ -1,0 +1,148 @@
+/* 
+ * CSS Utilities and Mixins
+ * This file contains custom CSS utilities and helper classes
+ */
+
+@layer utilities {
+  /* SPACING UTILITIES */
+  .gutter-sm {
+    padding: var(--spacing-2);
+  }
+  
+  .gutter-md {
+    padding: var(--spacing-4);
+  }
+  
+  .gutter-lg {
+    padding: var(--spacing-6);
+  }
+  
+  .gutter-xl {
+    padding: var(--spacing-8);
+  }
+  
+  /* Responsive spacing utilities */
+  @media (min-width: 768px) {
+    .md\:gutter-sm {
+      padding: var(--spacing-2);
+    }
+    
+    .md\:gutter-md {
+      padding: var(--spacing-4);
+    }
+    
+    .md\:gutter-lg {
+      padding: var(--spacing-6);
+    }
+    
+    .md\:gutter-xl {
+      padding: var(--spacing-8);
+    }
+  }
+  
+  /* FLEXBOX UTILITIES */
+  .flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .flex-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .flex-start {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+  
+  .flex-end {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  
+  .flex-column {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* TRUNCATE TEXT */
+  .truncate-1 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    text-overflow: ellipsis;
+  }
+  
+  .truncate-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    text-overflow: ellipsis;
+  }
+  
+  .truncate-3 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    text-overflow: ellipsis;
+  }
+  
+  /* ACCESSIBILITY UTILITIES */
+  .visually-hidden {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+    white-space: nowrap;
+  }
+  
+  /* Focus utilities */
+  .focus-ring {
+    outline: none;
+  }
+  
+  .focus-ring:focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+  }
+  
+  /* Aspect ratios */
+  .aspect-square {
+    aspect-ratio: 1 / 1;
+  }
+  
+  .aspect-video {
+    aspect-ratio: 16 / 9;
+  }
+  
+  .aspect-portrait {
+    aspect-ratio: 3 / 4;
+  }
+  
+  /* Overlay utility */
+  .overlay {
+    position: relative;
+  }
+  
+  .overlay::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: hsl(var(--foreground) / 0.5);
+  }
+}

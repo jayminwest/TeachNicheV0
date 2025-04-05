@@ -1,0 +1,117 @@
+/* 
+ * Animation & Transition Utilities
+ * This file contains animation and transition utility classes
+ */
+
+@import './keyframes.css';
+
+@layer utilities {
+  /* Fade animations */
+  .animate-fade-in {
+    animation: fade-in 0.3s ease-out forwards;
+  }
+  
+  .animate-fade-out {
+    animation: fade-out 0.3s ease-in forwards;
+  }
+  
+  /* Slide animations */
+  .animate-slide-up {
+    animation: slide-up 0.4s ease-out forwards;
+  }
+  
+  .animate-slide-down {
+    animation: slide-down 0.4s ease-out forwards;
+  }
+  
+  .animate-slide-in-right {
+    animation: slide-in-right 0.4s ease-out forwards;
+  }
+  
+  .animate-slide-in-left {
+    animation: slide-in-left 0.4s ease-out forwards;
+  }
+  
+  /* Scale animations */
+  .animate-scale-in {
+    animation: scale-in 0.3s ease-out forwards;
+  }
+  
+  /* Utility animations */
+  .animate-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  
+  .animate-bounce {
+    animation: bounce 1s infinite;
+  }
+  
+  .animate-spin {
+    animation: spin 1s linear infinite;
+  }
+  
+  .animate-ping {
+    animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+  
+  /* UI component animations */
+  .animate-accordion-down {
+    animation: accordion-down 0.2s ease-out;
+  }
+  
+  .animate-accordion-up {
+    animation: accordion-up 0.2s ease-out;
+  }
+  
+  .animate-collapsible-down {
+    animation: collapsible-down 0.2s ease-out;
+  }
+  
+  .animate-collapsible-up {
+    animation: collapsible-up 0.2s ease-out;
+  }
+  
+  /* Transition utilities */
+  .transition-fast {
+    transition-property: var(--transition-all);
+    transition-timing-function: var(--ease-in-out);
+    transition-duration: var(--duration-150);
+  }
+  
+  .transition-normal {
+    transition-property: var(--transition-all);
+    transition-timing-function: var(--ease-in-out);
+    transition-duration: var(--duration-300);
+  }
+  
+  .transition-slow {
+    transition-property: var(--transition-all);
+    transition-timing-function: var(--ease-in-out);
+    transition-duration: var(--duration-500);
+  }
+  
+  /* Specific transition utilities */
+  .transition-colors {
+    transition-property: var(--transition-colors);
+    transition-timing-function: var(--ease-in-out);
+    transition-duration: var(--duration-200);
+  }
+  
+  .transition-opacity {
+    transition-property: var(--transition-opacity);
+    transition-timing-function: var(--ease-in-out);
+    transition-duration: var(--duration-200);
+  }
+  
+  .transition-transform {
+    transition-property: var(--transition-transform);
+    transition-timing-function: var(--ease-in-out);
+    transition-duration: var(--duration-200);
+  }
+  
+  .transition-shadow {
+    transition-property: var(--transition-shadow);
+    transition-timing-function: var(--ease-in-out);
+    transition-duration: var(--duration-200);
+  }
+}

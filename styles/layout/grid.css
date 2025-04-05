@@ -1,0 +1,137 @@
+/* 
+ * Grid System
+ * This file contains grid and layout utilities
+ */
+
+@layer utilities {
+  /* Container classes with responsive width controls */
+  .container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: var(--spacing-4);
+    padding-right: var(--spacing-4);
+  }
+  
+  @media (min-width: 640px) {
+    .container {
+      max-width: 640px;
+      padding-left: var(--spacing-6);
+      padding-right: var(--spacing-6);
+    }
+  }
+  
+  @media (min-width: 768px) {
+    .container {
+      max-width: 768px;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .container {
+      max-width: 1024px;
+      padding-left: var(--spacing-8);
+      padding-right: var(--spacing-8);
+    }
+  }
+  
+  @media (min-width: 1280px) {
+    .container {
+      max-width: 1280px;
+    }
+  }
+  
+  @media (min-width: 1536px) {
+    .container {
+      max-width: 1536px;
+    }
+  }
+
+  /* Custom grid classes */
+  .grid-auto-fit {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
+    gap: var(--spacing-6);
+  }
+  
+  .grid-auto-fill {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(250px, 100%), 1fr));
+    gap: var(--spacing-6);
+  }
+  
+  /* 2-column grid with responsive fallback */
+  .grid-2-cols {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-6);
+  }
+  
+  @media (min-width: 768px) {
+    .grid-2-cols {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  /* 3-column grid with responsive fallback */
+  .grid-3-cols {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-6);
+  }
+  
+  @media (min-width: 640px) {
+    .grid-3-cols {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .grid-3-cols {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+  /* 4-column grid with responsive fallback */
+  .grid-4-cols {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-6);
+  }
+  
+  @media (min-width: 640px) {
+    .grid-4-cols {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .grid-4-cols {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  
+  /* SIDEBAR LAYOUT */
+  .sidebar-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    min-height: 100vh;
+  }
+  
+  @media (min-width: 1024px) {
+    .sidebar-layout {
+      grid-template-columns: minmax(250px, 20%) 1fr;
+    }
+  }
+  
+  /* COMMON LAYOUT PATTERNS */
+  .centered-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100%;
+    padding: var(--spacing-6);
+  }
+}

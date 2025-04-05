@@ -1,0 +1,73 @@
+/* 
+ * Card Component Styles
+ * Defines reusable styles for card components
+ */
+
+@layer components {
+  .card-base {
+    @apply bg-card text-card-foreground rounded-lg border border-border overflow-hidden;
+    box-shadow: var(--shadow);
+  }
+  
+  .card-hover {
+    @apply transition-transform duration-300 hover:-translate-y-1 hover:shadow-md;
+  }
+  
+  .card-interactive {
+    @apply hover:bg-muted/50 cursor-pointer;
+  }
+  
+  .card-header {
+    @apply p-6 pb-3;
+  }
+  
+  .card-title {
+    @apply text-xl font-semibold mb-1 tracking-tight;
+  }
+  
+  .card-description {
+    @apply text-sm text-muted-foreground;
+  }
+  
+  .card-content {
+    @apply p-6 pt-0;
+  }
+  
+  .card-footer {
+    @apply p-6 pt-0 flex items-center;
+  }
+  
+  /* Card variations */
+  .card-compact {
+    @apply p-4;
+  }
+  
+  .card-compact .card-header {
+    @apply p-4 pb-2;
+  }
+  
+  .card-compact .card-content {
+    @apply p-4 pt-0;
+  }
+  
+  .card-compact .card-footer {
+    @apply p-4 pt-0;
+  }
+  
+  /* Special card types */
+  .card-lesson {
+    @apply card-base card-hover;
+  }
+  
+  .card-lesson .lesson-thumbnail {
+    @apply aspect-video relative overflow-hidden;
+  }
+  
+  .card-lesson .lesson-thumbnail img {
+    @apply object-cover w-full h-full transition-transform hover:scale-105;
+  }
+  
+  .card-lesson .badge-container {
+    @apply absolute top-2 right-2;
+  }
+}

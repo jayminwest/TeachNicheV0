@@ -1,0 +1,43 @@
+/* 
+ * Global Base Styles
+ * This file provides global style settings for the application
+ */
+
+@import 'reset.css';
+@import 'typography.css';
+
+@layer base {
+  body {
+    @apply bg-background text-foreground;
+    min-height: 100vh;
+  }
+
+  ::selection {
+    background-color: hsl(var(--primary)/0.2);
+  }
+
+  /* Focus visible outline for accessibility */
+  :focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+  }
+
+  /* Default scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: hsl(var(--muted)/0.5);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: hsl(var(--muted-foreground)/0.5);
+    border-radius: var(--radius);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: hsl(var(--muted-foreground)/0.7);
+  }
+}
