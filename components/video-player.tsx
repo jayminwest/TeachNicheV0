@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { refreshVideoUrl } from "@/lib/video-utils";
+import { refreshVideoUrl } from "@/utilities/file/video";
 
 interface VideoPlayerProps {
   initialVideoUrl: string;

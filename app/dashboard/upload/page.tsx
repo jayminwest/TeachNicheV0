@@ -12,7 +12,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { useToast } from "@/components/ui/use-toast"
 import { AlertTriangle, Loader2, Upload } from "lucide-react"
-import { getVideoExtension, isValidVideoFormat, isValidVideoSize } from "@/lib/utils"
+import { getVideoExtension, isValidVideoFormat, isValidVideoSize } from "@/utilities/validation/file-validation"
 import Link from "next/link"
 import { Switch } from "@/components/ui/switch"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
@@ -786,4 +786,3 @@ export default function UploadContent() {
     </div>
   )
 }
-

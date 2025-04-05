@@ -1,6 +1,7 @@
 import { cookies } from "next/headers"
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs"
-import { stripe, calculateFees } from "@/lib/stripe"
+import { stripe } from "@/utilities/api/stripe"
+import { calculateFees } from "@/utilities/formatting/currency"
 import { type NextRequest, NextResponse } from "next/server"
 
 export async function POST(request: NextRequest) {
@@ -108,4 +109,3 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ message: error.message || "Internal server error" }, { status: 500 })
   }
 }
-

@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { useToast } from "@/components/ui/use-toast"
 import { ArrowLeft, CheckCircle, ExternalLink, Loader2, XCircle } from "lucide-react"
 import Link from "next/link"
-import { PLATFORM_FEE_PERCENTAGE, INSTRUCTOR_PERCENTAGE } from "@/lib/stripe"
+import { PLATFORM_FEE_PERCENTAGE, INSTRUCTOR_PERCENTAGE } from "@/utilities/formatting/currency"
 
 export default function StripeConnectPage() {
   const [loading, setLoading] = useState(true)
@@ -310,4 +310,3 @@ export default function StripeConnectPage() {
     </div>
   )
 }
-

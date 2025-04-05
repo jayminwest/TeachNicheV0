@@ -4,7 +4,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { CheckCircle, Lock, Download } from "lucide-react"
-import { formatPrice } from "@/lib/utils"
+import { formatPrice } from "@/utilities/formatting/currency"
 
 interface LessonCardProps {
   id: string
@@ -68,4 +68,3 @@ export function LessonCard({ id, title, thumbnailUrl, price, isPurchased = false
     </Card>
   )
 }
-

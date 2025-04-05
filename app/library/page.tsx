@@ -3,7 +3,7 @@ import { createServerClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
 import type { Video } from "@/types/supabase"
 import { VideoCard } from "@/components/video-card"
-import { formatPrice } from "@/lib/utils"
+import { formatPrice } from "@/utilities/formatting/currency"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
@@ -128,4 +128,3 @@ export default async function Library() {
     </div>
   )
 }
-

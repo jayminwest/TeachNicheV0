@@ -1,6 +1,6 @@
 import { createServerClient } from "@/lib/supabase/server"
 import { VideoCard } from "@/components/video-card"
-import { formatPrice } from "@/lib/utils"
+import { formatPrice } from "@/utilities/formatting/currency"
 
 export default async function VideosPage() {
   const supabase = createServerClient()
@@ -34,4 +34,3 @@ export default async function VideosPage() {
     </div>
   )
 }
-

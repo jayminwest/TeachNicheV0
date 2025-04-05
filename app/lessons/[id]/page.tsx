@@ -1,6 +1,6 @@
 import { createServerClient } from "@/lib/supabase/server"
-import { formatPrice } from "@/lib/utils"
-import { refreshVideoUrl } from "@/lib/video-utils"
+import { formatPrice } from "@/utilities/formatting/currency"
+import { refreshVideoUrl } from "@/utilities/file/video"
 import { Button } from "@/components/ui/button"
 import { CheckCircle, Lock, PlayCircle } from "lucide-react"
 import Link from "next/link"
@@ -231,4 +231,3 @@ export default async function LessonDetail({
     </div>
   )
 }
-

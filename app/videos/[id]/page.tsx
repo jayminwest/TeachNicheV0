@@ -1,7 +1,6 @@
-
 import { createServerClient } from "@/lib/supabase/server"
-import { formatPrice } from "@/lib/utils"
-import { refreshVideoUrlServer } from "@/lib/supabase/server-utils"
+import { formatPrice } from "@/utilities/formatting/currency"
+import { refreshVideoUrlServer } from "@/utilities/file/video"
 import { Button } from "@/components/ui/button"
 import { CheckCircle, Lock } from "lucide-react"
 import Link from "next/link"
