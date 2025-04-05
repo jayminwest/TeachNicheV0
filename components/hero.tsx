@@ -1,20 +1,24 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { MoveRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { OptimizedImage } from "@/components/ui/optimized-image";
 
 export function Hero() {
   return (
     <div className="w-full relative h-[600px]" data-testid="hero-section">
       <div className="absolute inset-0 z-0 overflow-hidden">
-        <Image
-          src="/303_group.png"
+        <OptimizedImage
+          assetName
+          category="hero"
+          src="kendama-group"
           alt="Kendama players group"
           fill
           className="w-full h-full object-cover filter grayscale brightness-[0.4]"
+          responsive
           priority
+          formats={["webp", "jpg"]}
         />
       </div>
       <div className="container mx-auto relative z-10 h-full">
