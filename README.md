@@ -2,39 +2,92 @@
 
 A platform for kendama instructors to share tutorial videos and for students to learn. Teach Niche enables instructors to monetize their expertise by selling individual videos or bundled lesson packages.
 
-![Teach Niche Platform](https://placeholder.com/your-screenshot-here)
+<div align="center">
+  <img src="https://placeholder.com/your-screenshot-here" alt="Teach Niche Platform" width="80%" />
+</div>
 
-## Features
+## 📋 Project Overview
 
-### For Instructors
-- **Content Management**: Upload and manage tutorial videos and lesson packages
-- **Monetization**: Set prices for individual videos and lesson packages
-- **Stripe Integration**: Receive payments directly to your Stripe account
-- **Dashboard**: Track earnings, video views, and student engagement
-- **Analytics**: Monitor which content performs best
+TeachNiche is a specialized platform designed to connect kendama instructors with students through high-quality video tutorials. The platform enables:
 
-### For Students
-- **Discover Content**: Browse videos and lessons from expert kendama instructors
-- **Purchase Content**: Buy individual videos or complete lesson packages
-- **Personal Library**: Access purchased content anytime
-- **Secure Payments**: Pay securely through Stripe
+- **Instructors** to upload, organize, and monetize their tutorial content
+- **Students** to discover, purchase, and learn from expert instructors
+- **Seamless payment processing** with direct instructor payouts via Stripe Connect
+- **Content organization** through individual videos and bundled lessons
 
-## Tech Stack
+## 🚀 Quick Start
 
-- **Frontend**: Next.js 15, React 19, Tailwind CSS
-- **Authentication**: Supabase Auth
-- **Database**: Supabase PostgreSQL
-- **Storage**: Supabase Storage
-- **Payments**: Stripe Connect
-- **Styling**: shadcn/ui components
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/teach-niche.git
+cd teach-niche
 
-## Prerequisites
+# Install dependencies
+pnpm install
 
-- Node.js 18+ and npm/pnpm
-- Supabase account
-- Stripe account (with Connect capability)
+# Set up environment variables
+cp .env.example .env.local
+# Edit .env.local with your credentials
 
-## Environment Variables
+# Start the development server
+pnpm dev
+
+# Open http://localhost:3000 in your browser
+```
+
+## 🛠️ Technology Stack
+
+<div align="center">
+  <img src="https://placeholder.com/tech-stack-diagram.png" alt="Technology Stack" width="70%" />
+</div>
+
+- **Frontend**: [Next.js 15](https://nextjs.org/), [React 19](https://react.dev/), [Tailwind CSS](https://tailwindcss.com/)
+- **Authentication**: [Supabase Auth](https://supabase.com/auth)
+- **Database**: [Supabase PostgreSQL](https://supabase.com/database)
+- **Storage**: [Supabase Storage](https://supabase.com/storage)
+- **Payments**: [Stripe Connect](https://stripe.com/connect)
+- **Styling**: [shadcn/ui](https://ui.shadcn.com/) components
+
+## 📚 Documentation
+
+We maintain comprehensive documentation to help developers understand and contribute to TeachNiche:
+
+### Architecture and Design
+- [System Architecture](./documentation/architecture/system-architecture.md)
+- [Design Decisions](./documentation/architecture/design-decisions.md)
+- [Database Schema](./documentation/architecture/database-schema.md)
+
+### Development Guides
+- [Environment Setup](./documentation/workflow/environment-setup.md)
+- [Development Workflow](./documentation/workflow/development-workflow.md)
+- [Code Style Guide](./documentation/workflow/code-style-guide.md)
+
+### API Documentation
+- [API Overview](./documentation/api/overview.md)
+- [Authentication Endpoints](./documentation/api/auth)
+- [Checkout Endpoints](./documentation/api/checkout)
+- [Stripe Integration Endpoints](./documentation/api/stripe)
+- [Video Management Endpoints](./documentation/api/video)
+- [Admin Endpoints](./documentation/api/admin)
+
+### Deployment and Operations
+- [Deployment Guide](./documentation/deployment/deployment-guide.md)
+- [Monitoring and Logging](./documentation/deployment/monitoring.md)
+- [Scaling Considerations](./documentation/deployment/scaling.md)
+
+### Troubleshooting
+- [Common Issues and Solutions](./documentation/troubleshooting/common-issues.md)
+- [Debugging Guide](./documentation/troubleshooting/debugging.md)
+
+## 🌐 Environment Setup
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) 18+ and [pnpm](https://pnpm.io/)
+- [Supabase](https://supabase.com/) account
+- [Stripe](https://stripe.com/) account (with Connect capability)
+
+### Environment Variables
 
 Create a `.env.local` file in the root directory with the following variables:
 
@@ -53,42 +106,9 @@ NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 ```
 
-## Installation
+Refer to [Environment Setup Guide](./documentation/workflow/environment-setup.md) for detailed instructions.
 
-1. Clone the repository:
-```bash
-git clone https://github.com/yourusername/teach-niche.git
-cd teach-niche
-```
-
-2. Install dependencies:
-```bash
-pnpm install
-```
-
-3. Run the development server:
-```bash
-pnpm dev
-```
-
-4. Open [http://localhost:3000](http://localhost:3000) in your browser.
-
-## Supabase Setup
-
-1. Create a new Supabase project
-2. Run the migrations in the `supabase/migrations` directory
-3. Set up storage buckets for videos and thumbnails
-4. Configure RLS policies (see `app/admin/setup/rls-policies.tsx`)
-
-## Stripe Setup
-
-1. Create a Stripe account and enable Connect
-2. Set up webhook endpoints for:
-   - Payment success
-   - Account updates
-3. Configure payout settings
-
-## Project Structure
+## 🏗️ Project Structure
 
 ```
 teach-niche/
@@ -100,6 +120,8 @@ teach-niche/
 │   ├── lessons/          # Lesson browsing and viewing
 │   └── videos/           # Video browsing and viewing
 ├── components/           # Reusable React components
+├── documentation/        # Project documentation
+├── hooks/                # Custom React hooks
 ├── lib/                  # Utility functions and services
 │   ├── stripe.ts         # Stripe integration
 │   └── supabase/         # Supabase clients
@@ -109,23 +131,26 @@ teach-niche/
 └── middleware.ts         # Next.js middleware for auth
 ```
 
-## Usage
+## 🧩 Features
 
 ### For Instructors
-
-1. Sign up for an account
-2. Set up your Stripe Connect account
-3. Upload videos or create lesson packages
-4. Set prices and publish content
-5. Monitor sales through the dashboard
+- **Content Management**: Upload and manage tutorial videos and lesson packages
+- **Monetization**: Set prices for individual videos and lesson packages
+- **Stripe Integration**: Receive payments directly to your Stripe account
+- **Dashboard**: Track earnings, video views, and student engagement
+- **Analytics**: Monitor which content performs best
 
 ### For Students
+- **Discover Content**: Browse videos and lessons from expert kendama instructors
+- **Purchase Content**: Buy individual videos or complete lesson packages
+- **Personal Library**: Access purchased content anytime
+- **Secure Payments**: Pay securely through Stripe
 
-1. Browse available videos and lessons
-2. Purchase content with a credit card
-3. Access purchased content in your library
+## 🔄 API Endpoints
 
-## API Endpoints
+The platform exposes several API endpoints for various functionalities. See our [API Documentation](./documentation/api/overview.md) for complete details.
+
+Key endpoints include:
 
 - `/api/checkout` - Process video purchases
 - `/api/checkout-lesson` - Process lesson package purchases
@@ -133,17 +158,13 @@ teach-niche/
 - `/api/verify-purchase` - Verify user access to content
 - `/api/webhooks/stripe` - Handle Stripe webhook events
 
-## Deployment
+## 🚢 Deployment
 
-This project can be deployed on Vercel:
+TeachNiche is designed to be deployed on [Vercel](https://vercel.com/). See our [Deployment Guide](./documentation/deployment/deployment-guide.md) for detailed instructions.
 
-```bash
-vercel
-```
+## 🤝 Contributing
 
-Or any other platform that supports Next.js applications.
-
-## Contributing
+We welcome contributions to TeachNiche! Please follow these steps:
 
 1. Fork the repository
 2. Create a feature branch: `git checkout -b feature/my-feature`
@@ -151,11 +172,13 @@ Or any other platform that supports Next.js applications.
 4. Push to the branch: `git push origin feature/my-feature`
 5. Open a pull request
 
-## License
+Please see our [Contributing Guidelines](./documentation/workflow/contributing.md) for more information.
+
+## 📄 License
 
 [MIT](LICENSE)
 
-## Acknowledgements
+## 🙏 Acknowledgements
 
 - [Next.js](https://nextjs.org/)
 - [Supabase](https://supabase.io/)
