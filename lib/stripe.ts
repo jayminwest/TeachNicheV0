@@ -1,4 +1,10 @@
 import Stripe from "stripe"
+import { 
+  STRIPE_API_VERSION, 
+  APP_NAME, 
+  APP_VERSION,
+  PLATFORM_FEE_PERCENTAGE 
+} from "@/constants/app"
 
 // Initialize Stripe
 let stripe: Stripe;
@@ -6,25 +12,25 @@ let stripe: Stripe;
 // Only initialize if we have a key
 if (process.env.STRIPE_SECRET_KEY) {
   stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-    apiVersion: "2025-03-31.basil", // Update to expected version
+    apiVersion: STRIPE_API_VERSION,
     appInfo: {
-      name: "Teach Niche",
-      version: "0.1.0",
+      name: APP_NAME,
+      version: APP_VERSION,
     },
   });
 } else {
   console.error("STRIPE_SECRET_KEY is missing. Stripe functionality will be limited.");
   // Create a placeholder to avoid null errors
   stripe = new Stripe('sk_test_placeholder', {
-    apiVersion: "2025-03-31.basil", // Update to expected version
+    apiVersion: STRIPE_API_VERSION,
   });
 }
 
 export { stripe }
 
-// Constants for the platform fee percentage
-export const PLATFORM_FEE_PERCENTAGE = 15
-export const INSTRUCTOR_PERCENTAGE = 100 - PLATFORM_FEE_PERCENTAGE
+// Export Stripe-related constants
+export { PLATFORM_FEE_PERCENTAGE } from "@/constants/app"
+export { INSTRUCTOR_PERCENTAGE } from "@/constants/app"
 
 // Helper function to calculate fee amounts
 export function calculateFees(amount: number) {
@@ -88,4 +94,3 @@ export async function syncStripeAccountStatus(supabase: any, userId: string, str
     throw error;
   }
 }
-

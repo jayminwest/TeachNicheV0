@@ -8,7 +8,13 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { useToast } from "@/components/ui/use-toast"
 import { ArrowLeft, CheckCircle, ExternalLink, Loader2, XCircle } from "lucide-react"
 import Link from "next/link"
-import { PLATFORM_FEE_PERCENTAGE, INSTRUCTOR_PERCENTAGE } from "@/lib/stripe"
+import { 
+  PLATFORM_FEE_PERCENTAGE, 
+  INSTRUCTOR_PERCENTAGE,
+  STRIPE_PROCESSING_FEE
+} from "@/constants/app"
+import { ApiEndpoints, ApiMessages, UiMessages } from "@/constants"
+import { Routes } from "@/constants/app"
 
 export default function StripeConnectPage() {
   const [loading, setLoading] = useState(true)
@@ -24,7 +30,7 @@ export default function StripeConnectPage() {
       try {
         setLoading(true)
         // Use cache busting to ensure we get fresh data
-        const response = await fetch("/api/stripe/account-status", {
+        const response = await fetch(ApiEndpoints.STRIPE.ACCOUNT_STATUS, {
           cache: 'no-store',
           headers: {
             'Cache-Control': 'no-cache'
@@ -54,7 +60,7 @@ export default function StripeConnectPage() {
   const handleCreateAccount = async () => {
     try {
       setCreatingAccount(true)
-      const response = await fetch("/api/stripe/create-connect-account", {
+      const response = await fetch(ApiEndpoints.STRIPE.CREATE_CONNECT_ACCOUNT, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -86,7 +92,7 @@ export default function StripeConnectPage() {
   const handleLoginToStripe = async () => {
     try {
       setCreatingLoginLink(true)
-      const response = await fetch("/api/stripe/create-login-link")
+      const response = await fetch(ApiEndpoints.STRIPE.CREATE_LOGIN_LINK)
 
       if (!response.ok) {
         throw new Error("Failed to create Stripe login link")
@@ -116,7 +122,7 @@ export default function StripeConnectPage() {
       <div className="container py-8 flex justify-center items-center min-h-[60vh]">
         <div className="flex flex-col items-center gap-4">
           <Loader2 className="h-8 w-8 animate-spin text-primary" />
-          <p>Checking Stripe Connect status...</p>
+          <p>{UiMessages.LOADING}</p>
         </div>
       </div>
     )
@@ -126,7 +132,7 @@ export default function StripeConnectPage() {
     <div className="container py-8">
       <div className="flex items-center gap-4 mb-8">
         <Button variant="outline" size="icon" asChild>
-          <Link href="/dashboard">
+          <Link href={Routes.DASHBOARD.INDEX}>
             <ArrowLeft className="h-4 w-4" />
           </Link>
         </Button>
@@ -279,7 +285,7 @@ export default function StripeConnectPage() {
                 <li>Payments are processed securely through Stripe</li>
                 <li>Your earnings are transferred directly to your Stripe Connect account</li>
                 <li>You can set up payouts to your bank account in your Stripe dashboard</li>
-                <li>Standard Stripe processing fees may apply (typically 2.9% + $0.30 per transaction)</li>
+                <li>Standard Stripe processing fees may apply (typically {STRIPE_PROCESSING_FEE.PERCENTAGE}% + ${STRIPE_PROCESSING_FEE.FIXED_AMOUNT} per transaction)</li>
               </ul>
             </div>
 
@@ -310,4 +316,3 @@ export default function StripeConnectPage() {
     </div>
   )
 }
-
