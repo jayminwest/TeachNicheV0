@@ -18,6 +18,12 @@ export default function Header() {
 
   useEffect(() => {
     const getUser = async () => {
+      if (!supabase) {
+        console.error("Supabase client not initialized");
+        setLoading(false);
+        return;
+      }
+      
       const {
         data: { session },
       } = await supabase.auth.getSession()
@@ -27,6 +33,11 @@ export default function Header() {
 
     getUser()
 
+    if (!supabase) {
+      console.error("Supabase client not initialized");
+      return () => {};
+    }
+    
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -34,7 +45,7 @@ export default function Header() {
     })
 
     return () => subscription.unsubscribe()
-  }, [])
+  }, [supabase])
 
   const handleSignOut = async () => {
     try {
@@ -53,7 +64,9 @@ export default function Header() {
         console.error("Error signing out via API:", await response.text());
         
         // Fallback to client-side signout if server-side fails
-        await supabase.auth.signOut();
+        if (supabase) {
+          await supabase.auth.signOut();
+        }
         window.location.href = "/";
       }
     } catch (error) {
@@ -61,7 +74,9 @@ export default function Header() {
       
       // Final fallback
       try {
-        await supabase.auth.signOut({ scope: 'global' });
+        if (supabase) {
+          await supabase.auth.signOut({ scope: 'global' });
+        }
         window.location.href = "/";
       } catch (e) {
         console.error("Final signout attempt failed:", e);

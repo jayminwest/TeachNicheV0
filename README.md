@@ -130,9 +130,17 @@ Detailed setup instructions are available in `ai_docs/stripe_test_setup.md` and 
 - `pnpm setup:stripe`: Start Stripe webhook forwarding
 - `pnpm setup:env`: Create development environment file from template
 
-## TypeScript and Supabase Types
+## TypeScript and Code Quality
 
-This project uses TypeScript for type safety, with database types generated from Supabase. Due to the Next.js 15 and Supabase integration, there are a few important notes about type handling:
+This project enforces strict TypeScript type checking and code quality throughout the development process:
+
+- **TypeScript Type Checking**: All code must pass TypeScript type checking. Type checking is enforced:
+  - During development with `pnpm typecheck`
+  - During builds with `pnpm build` (which includes type checking)
+  - In pre-commit hooks to prevent committing code with type errors
+  - In CI/CD pipelines to ensure all merged code is type-safe
+
+- **Supabase Type Safety**: When working with Supabase, follow these best practices:
 
 1. **Awaiting Supabase Client**: In Next.js 15, the Supabase client from `createServerClient()` returns a Promise that must be awaited before use:
    ```typescript
@@ -158,7 +166,14 @@ This project uses TypeScript for type safety, with database types generated from
    const item = data[0]
    ```
 
-4. **Error Handling**: For routes that use Supabase, always handle potential errors and provide appropriate HTTP status responses.
+4. **Null Check Patterns**: Always check for null Supabase clients and handle them gracefully:
+   ```typescript
+   if (!supabase) {
+     throw new Error("Supabase client not initialized");
+   }
+   ```
+
+5. **Error Handling**: For routes that use Supabase, always handle potential errors and provide appropriate HTTP status responses.
 
 ## Contributing
 

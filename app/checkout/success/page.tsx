@@ -5,7 +5,8 @@ import { useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { CheckCircle, Loader2 } from "lucide-react"
 import Link from "next/link"
-import { useToast } from "@/components/ui/use-toast"
+import { useToast } from "@/hooks/use-toast"
+import { isBuildTime } from "@/lib/env-utils"
 
 export default function CheckoutSuccess() {
   const [verifying, setVerifying] = useState(true)
@@ -16,6 +17,13 @@ export default function CheckoutSuccess() {
 
   useEffect(() => {
     const verifyPurchase = async () => {
+      // Skip verification during build or if env variables are missing
+      if (isBuildTime()) {
+        console.log("Skipping purchase verification during build")
+        setVerifying(false)
+        return
+      }
+      
       if (!sessionId) {
         toast({
           variant: "destructive",

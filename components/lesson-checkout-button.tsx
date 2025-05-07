@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { useToast } from "@/components/ui/use-toast"
+import { useToast } from "@/hooks/use-toast"
 import { Loader2, Lock, Download } from "lucide-react" // Added Download icon
 import { useRouter } from "next/navigation"
 import { calculatePriceWithStripeFees } from "@/lib/stripe"

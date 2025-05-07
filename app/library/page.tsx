@@ -8,6 +8,9 @@ import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { format } from "date-fns"
 
+// Mark this page as dynamic to prevent static generation errors
+export const dynamic = 'force-dynamic';
+
 export default async function Library() {
   // For Next.js 15, createServerClient is async
   const supabase = await createServerClient();
@@ -45,12 +48,25 @@ export default async function Library() {
       // Try 2: Check purchases table directly
       const { data: purchases, error: purchasesError } = await supabase
         .from("purchases")
-        .select("lesson_id, created_at as purchase_date")
+        .select("*, created_at")
         .eq("user_id", user.id);
         
       if (purchases && purchases.length > 0) {
-        // Get the lesson details using the lesson_ids
-        const lessonIds = purchases.map(p => p.lesson_id);
+        // Extract valid lesson IDs and create a purchase map
+        const validPurchases = purchases.filter(p => p.lesson_id);
+        const purchaseDates = new Map<string, string>();
+        
+        // Store purchase dates by lesson ID
+        validPurchases.forEach(p => {
+          if (p.lesson_id) {
+            purchaseDates.set(String(p.lesson_id), p.created_at);
+          }
+        });
+        
+        // Get unique lesson IDs
+        const lessonIds = Array.from(purchaseDates.keys());
+        
+        // Get the lesson details
         const { data: lessons } = await supabase
           .from("lessons")
           .select("id, title, description, thumbnail_url, instructor_id, price")
@@ -58,17 +74,16 @@ export default async function Library() {
           
         // Combine the purchase and lesson data
         if (lessons) {
-          purchasedLessons = purchases.map(purchase => {
-            const lesson = lessons.find(l => l.id === purchase.lesson_id);
+          purchasedLessons = lessons.map(lesson => {
             return {
               user_id: user.id,
-              lesson_id: purchase.lesson_id,
-              title: lesson?.title || "Untitled Lesson",
-              description: lesson?.description || "",
-              thumbnail_url: lesson?.thumbnail_url || null,
-              purchase_date: purchase.purchase_date,
-              instructor_id: lesson?.instructor_id || null,
-              price: lesson?.price || 0
+              lesson_id: lesson.id,
+              title: lesson.title || "Untitled Lesson",
+              description: lesson.description || "",
+              thumbnail_url: lesson.thumbnail_url || null,
+              purchase_date: purchaseDates.get(lesson.id) || new Date().toISOString(),
+              instructor_id: lesson.instructor_id || null,
+              price: lesson.price || 0
             };
           });
         }

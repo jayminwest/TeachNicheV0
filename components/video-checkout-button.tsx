@@ -4,7 +4,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Loader2, Lock } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { useToast } from "@/components/ui/use-toast"
+import { useToast } from "@/hooks/use-toast"
 
 interface VideoCheckoutButtonProps {
   videoId: string

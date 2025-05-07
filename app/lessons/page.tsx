@@ -71,8 +71,14 @@ export default async function LessonsPage() {
     };
   }));
 
+  // Define interface for purchased lesson IDs
+  interface PurchasedLessonId {
+    original: string;
+    normalized: string;
+  }
+  
   // If user is logged in, fetch their purchased lessons
-  let purchasedLessonIds: string[] = []
+  let purchasedLessonIds: PurchasedLessonId[] = []
   if (user) {
     // Debug output to server console
     console.log("User is logged in:", user.id);
@@ -90,29 +96,31 @@ export default async function LessonsPage() {
     }
     
     // Extract lesson_ids and normalize for consistent comparison
-    purchasedLessonIds = (purchasedLessons || [])
-      .filter(p => p.lesson_id) // Only include records with a lesson_id
-      .map(p => {
-        let lessonId;
-        
-        // Extract the ID based on data type
-        if (typeof p.lesson_id === 'string') {
-          lessonId = p.lesson_id;
-        } else if (typeof p.lesson_id === 'object' && p.lesson_id !== null) {
-          lessonId = p.lesson_id.id || String(p.lesson_id);
-        } else {
-          lessonId = String(p.lesson_id);
-        }
-        
-        // Normalize the ID - remove hyphens and convert to lowercase
-        const normalizedId = lessonId.replace(/-/g, '').toLowerCase();
-        
-        console.log(`Extracted lesson_id: ${lessonId} from purchase ${p.id}, normalized: ${normalizedId}`);
-        return {
-          original: lessonId,
-          normalized: normalizedId
-        };
-      });
+    if (purchasedLessons) {
+      purchasedLessonIds = purchasedLessons
+        .filter(p => p.lesson_id) // Only include records with a lesson_id
+        .map(p => {
+          let lessonId: string;
+          
+          // Extract the ID based on data type
+          if (typeof p.lesson_id === 'string') {
+            lessonId = p.lesson_id;
+          } else if (typeof p.lesson_id === 'object' && p.lesson_id !== null) {
+            lessonId = (p.lesson_id as any).id || String(p.lesson_id);
+          } else {
+            lessonId = String(p.lesson_id);
+          }
+          
+          // Normalize the ID - remove hyphens and convert to lowercase
+          const normalizedId = lessonId.replace(/-/g, '').toLowerCase();
+          
+          console.log(`Extracted lesson_id: ${lessonId} from purchase ${p.id}, normalized: ${normalizedId}`);
+          return {
+            original: lessonId,
+            normalized: normalizedId
+          };
+        });
+    }
       
     console.log("Purchased lessons:", purchasedLessonIds);
   }

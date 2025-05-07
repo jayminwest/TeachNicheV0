@@ -1,0 +1,7 @@
+#!/bin/sh
+
+echo "Running type check..."
+pnpm typecheck || (echo "Type check failed. Please fix the issues before committing." && exit 1)
+
+echo "Running linter..."
+pnpm lint || (echo "Linting failed. Please fix the issues before committing." && exit 1)

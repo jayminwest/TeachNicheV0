@@ -11,8 +11,7 @@ if (process.env.STRIPE_SECRET_KEY) {
     appInfo: {
       name: "Teach Niche",
       version: "0.1.0",
-      // Include environment in app info for better tracking
-      environment: isDevelopment() ? 'development' : 'production',
+      // AppInfo doesn't support environment in the type definition
     },
   });
   
@@ -30,7 +29,7 @@ if (process.env.STRIPE_SECRET_KEY) {
 export { stripe }
 
 // Constants for the platform fee percentage - read from env with fallback
-export const PLATFORM_FEE_PERCENTAGE = parseInt(getEnv('STRIPE_APPLICATION_FEE_PERCENT', '15'), 10)
+export const PLATFORM_FEE_PERCENTAGE = parseInt(getEnv('STRIPE_APPLICATION_FEE_PERCENT', '15') || '15', 10)
 export const INSTRUCTOR_PERCENTAGE = 100 - PLATFORM_FEE_PERCENTAGE
 
 // Standard Stripe processing fee in the US

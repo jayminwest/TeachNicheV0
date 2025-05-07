@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { CheckCircle, Loader2 } from "lucide-react"
 import Link from "next/link"
-import { useToast } from "@/components/ui/use-toast"
+import { useToast } from "@/hooks/use-toast"
 
 export default function LessonCheckoutSuccess() {
   const [verifying, setVerifying] = useState(true)

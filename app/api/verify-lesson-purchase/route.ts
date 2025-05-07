@@ -197,7 +197,7 @@ export async function GET(request: NextRequest) {
       stripe_product_id: string | null;
       stripe_price_id: string | null;
       instructor_payout_amount: number | null;
-      platform_fee_amount: number;
+      platform_fee_amount: number | null; // Allow null for platform fee amount
       payout_status: string;
       is_free: boolean;
       [key: string]: any; // Allow for dynamic properties

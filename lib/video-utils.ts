@@ -27,6 +27,10 @@ export async function refreshVideoUrl(videoUrl: string): Promise<string> {
       // Create a new signed URL with error handling
       try {
         // Use a 12-hour expiry (43200 seconds) for consistency with the API
+        if (!supabase) {
+          throw new Error("Supabase client not initialized");
+        }
+        
         const { data, error } = await supabase.storage
           .from('videos')
           .createSignedUrl(videoPath, 43200); // 12 hours
@@ -105,6 +109,10 @@ export async function refreshVideoUrl(videoUrl: string): Promise<string> {
       }
       
       // Create a new signed URL with error handling
+      if (!supabase) {
+        throw new Error("Supabase client not initialized");
+      }
+      
       const { data, error } = await supabase.storage
         .from('videos')
         .createSignedUrl(videoUrl, 43200); // 12 hours

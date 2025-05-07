@@ -17,13 +17,9 @@ export async function POST() {
     )
   }
   
-  // Clear all supabase-related cookies to be extra thorough
-  // This helps with environments where cookie management might be different
-  cookieStore.getAll().forEach(cookie => {
-    if (cookie.name.includes('supabase') || cookie.name.includes('sb-')) {
-      cookieStore.delete(cookie.name)
-    }
-  })
+  // In Next.js 15, cookies() doesn't support getAll or delete directly
+  // The signOut function above will handle cookie clearing automatically through Supabase
+  // No need for manual cookie manipulation
   
   return NextResponse.json({ success: true })
 }

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { useToast } from "@/components/ui/use-toast"
+import { useToast } from "@/hooks/use-toast"
 import { Loader2, CheckCircle, XCircle, Download, AlertTriangle } from "lucide-react"
 import { Textarea } from "@/components/ui/textarea"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -104,6 +104,10 @@ export default function SecureStorageSetup() {
       setIsMonitoring(true)
       setProgress(0)
       
+      if (!supabase) {
+        throw new Error("Supabase client not initialized");
+      }
+      
       // Get total number of lessons with videos
       const { data: lessonCount, error: lessonCountError } = await supabase
         .from('lessons')
@@ -126,6 +130,10 @@ export default function SecureStorageSetup() {
       let lastProcessedId = null;
       
       while (true) {
+        if (!supabase) {
+          throw new Error("Supabase client not initialized");
+        }
+        
         let query = supabase
           .from('lessons')
           .select('id, title, video_url, instructor_id, price')
@@ -173,6 +181,10 @@ export default function SecureStorageSetup() {
             }
             
             // Try to get a signed URL
+            if (!supabase) {
+              throw new Error("Supabase client not initialized");
+            }
+            
             const { data: signedUrlData, error: signedUrlError } = await supabase.storage
               .from('videos')
               .createSignedUrl(videoPath, 60); // 1 minute expiry for testing

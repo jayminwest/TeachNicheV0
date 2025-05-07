@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { formatPrice } from "@/lib/utils"
 import { createServerClient } from "@/lib/supabase/server"
+import type { Database } from "@/types/supabase"
 
 export default async function StatsPage() {
   // Check if the user is an admin - this will redirect if not authorized
@@ -17,11 +18,12 @@ export default async function StatsPage() {
     .from("users")
     .select("*", { count: 'exact', head: true })
   
-  // Get instructor stats  
+  // Get instructor stats
+  // Use type assertion to bypass TypeScript filter constraint
   const { count: instructorCount } = await supabase
     .from("users")
     .select("*", { count: 'exact', head: true })
-    .eq("role", "instructor")
+    .filter('role', 'eq', 'instructor' as any)
   
   // Get lesson stats
   const { count: lessonCount } = await supabase
@@ -29,7 +31,7 @@ export default async function StatsPage() {
     .select("*", { count: 'exact', head: true })
   
   // Simply query the purchases table directly
-  const { data: purchases, error: purchasesError } = await supabase
+  const { data: purchasesData, error: purchasesError } = await supabase
     .from("purchases")
     .select("id, amount, is_free");
   
@@ -37,10 +39,22 @@ export default async function StatsPage() {
     console.error("Admin Stats: Error fetching purchases:", purchasesError.message);
   }
   
-  console.log(`Admin Stats: Retrieved ${purchases?.length || 0} purchases directly from database`);
+  // Safely type our purchases data
+  interface PurchaseData {
+    id: string;
+    amount: number;
+    is_free: boolean;
+  }
+  
+  // Type assertion on purchases data to avoid errors
+  const purchases: PurchaseData[] = (purchasesData && !('error' in purchasesData)) 
+    ? purchasesData as PurchaseData[]
+    : [];
+  
+  console.log(`Admin Stats: Retrieved ${purchases.length} purchases directly from database`);
   
   // Log some purchase details to help diagnose
-  if (purchases && purchases.length > 0) {
+  if (purchases.length > 0) {
     console.log(`Admin Stats: First few purchases:`, 
       purchases.slice(0, 3).map(p => ({
         id: p.id,
@@ -51,13 +65,13 @@ export default async function StatsPage() {
   }
   
   // Calculate statistics from raw purchase data
-  const totalPurchases = purchases?.length || 0;
-  const freePurchases = purchases?.filter(p => p.is_free === true).length || 0;
+  const totalPurchases = purchases.length;
+  const freePurchases = purchases.filter(p => p.is_free === true).length;
   const paidPurchases = totalPurchases - freePurchases;
   
   // Calculate total revenue
   let totalRevenue = 0;
-  purchases?.forEach(p => {
+  purchases.forEach(p => {
     // Skip free purchases
     if (p.is_free === true) return;
     

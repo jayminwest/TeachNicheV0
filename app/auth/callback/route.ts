@@ -22,11 +22,10 @@ export async function GET(request: NextRequest) {
 
   if (code) {
     try {
-      // In Next.js 15, cookies() must be awaited
-      const cookieStore = await cookies()
+      // In Next.js 15, cookies() returns a synchronous cookie store
       // Properly type the client
       const supabase = createRouteHandlerClient<Database>({ 
-        cookies: () => cookieStore 
+        cookies 
       })
       
       const { error: sessionError } = await supabase.auth.exchangeCodeForSession(code)

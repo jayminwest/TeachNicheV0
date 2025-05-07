@@ -42,7 +42,7 @@ export function validateEnv(): { valid: boolean; missing: string[]; message: str
   )
 
   const valid = missing.length === 0
-  let message = valid
+  const message = valid
     ? 'All required environment variables are set'
     : `Missing required environment variables: ${missing.join(', ')}`
 
@@ -125,7 +125,30 @@ export function logEnvironment(): void {
   }
 }
 
-export default {
+/**
+ * Checks if the current context is during a build process (not at runtime)
+ * Useful for conditionally disabling functionality when building without env vars
+ */
+export function isBuildTime(): boolean {
+  // In build time, we don't have browser globals and certain env vars might be missing
+  return (
+    typeof window === 'undefined' && 
+    (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
+  )
+}
+
+/**
+ * Checks if required environment variables are set
+ * Useful for feature flags based on environment configuration
+ */
+export function hasRequiredEnvVars(): boolean {
+  return !!(
+    process.env.NEXT_PUBLIC_SUPABASE_URL && 
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  )
+}
+
+const envUtils = {
   validateEnv,
   getEnv,
   isProduction,
@@ -133,4 +156,8 @@ export default {
   getEnvironment,
   getEnvDescription,
   logEnvironment,
-}
+  isBuildTime,
+  hasRequiredEnvVars,
+};
+
+export default envUtils;

@@ -12,11 +12,34 @@ export const createServerClient = cache(() => {
     // Validate that we have the required environment variables
     if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
       console.error("Supabase environment variables missing for server client");
+      
+      // Options to allow build process to continue even without proper env vars
+      // These will only be used during builds and will be replaced in real environments
+      const dummyOptions = {
+        cookies,
+        supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder-project.supabase.co",
+        supabaseKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "placeholder-anon-key"
+      }
+      
+      // Create client with dummy values to allow builds to complete
+      const dummyClient = createServerComponentClient<Database>(dummyOptions)
+      
+      // Create a proxy to handle requests safely during build time
+      return new Proxy(dummyClient, {
+        get(target, prop) {
+          // Most methods should return mock responses for build time
+          if (typeof target[prop as keyof typeof target] === 'function') {
+            // Return a function that resolves with empty data
+            return () => Promise.resolve({ data: null, error: { message: "Build-time mock" } })
+          }
+          return target[prop as keyof typeof target]
+        }
+      }) as typeof dummyClient
     }
     
-    const cookieStore = await cookies()
+    // Create the real client with proper cookies function for Next.js
     const client = createServerComponentClient<Database>({ 
-      cookies: () => cookieStore 
+      cookies
     })
     
     // In development mode, log the connection info (but only once)

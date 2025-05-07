@@ -66,6 +66,10 @@ export default function DebugHeader() {
     
     const getUser = async () => {
       try {
+        if (!supabase) {
+          throw new Error("Supabase client not initialized");
+        }
+        
         const {
           data: { session },
           error: sessionError,
@@ -87,6 +91,11 @@ export default function DebugHeader() {
 
     getUser()
 
+    if (!supabase) {
+      console.error("Supabase client not initialized");
+      return () => {};
+    }
+    
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -94,7 +103,7 @@ export default function DebugHeader() {
     })
 
     return () => subscription.unsubscribe()
-  }, [])
+  }, [supabase])
 
   return (
     <>
